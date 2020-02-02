@@ -4,3 +4,4 @@ spring:
         port: 6379
         prefix: User
         ttl: 1
+        password:

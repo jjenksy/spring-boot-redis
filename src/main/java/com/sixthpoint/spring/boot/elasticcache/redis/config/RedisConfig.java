@@ -31,7 +31,7 @@ public class RedisConfig {
     }
 
     @Bean(name = "cacheManager1Hour")
-    public CacheManager cacheManager1Hour(RedisConnectionFactory redisConnectionFactory) {
+    public CacheManager cacheManager1Hour(LettuceConnectionFactory redisConnectionFactory) {
         Duration expiration = Duration.ofHours(ttl);
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig()
