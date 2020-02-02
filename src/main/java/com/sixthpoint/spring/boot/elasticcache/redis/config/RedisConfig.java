@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 import java.time.Duration;
@@ -22,8 +21,6 @@ public class RedisConfig {
 
     @Value("${spring.redis.ttl}")
     private int ttl;
-
-
 
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
