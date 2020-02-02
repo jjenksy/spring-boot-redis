@@ -1,0 +1,39 @@
+version: '2'
+services:
+  turq:
+    image: python:3.6.6-alpine
+    command:
+      - '/bin/sh'
+      - '-c'
+      - 'pip3 install turq  && pip3 install requests && echo "============" && cat /data/mocks.py && echo "============" && turq -v -p=13085 -P="" -r=/data/mocks.py'
+    ports:
+      - "13085:13085"
+      - "13086:13086"
+    volumes:
+      - "./:/data"
+  #    network_mode: "host"
+  redis-master:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_REPLICATION_MODE=master
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+  redis-replica:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=master
+      - REDIS_MASTER_PORT_NUMBER=6379
+    ports:
+      - '6378:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+volumes:
+  redis_data:
+    driver: local
