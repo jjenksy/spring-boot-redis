@@ -12,11 +12,16 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class UserService {
 
+    private final RestTemplate userRestTemplate;
+
+    public UserService(RestTemplate userRestTemplate) {
+        this.userRestTemplate = userRestTemplate;
+    }
+
     @Cacheable(value = "getLongRunningTaskResult", key="{#user}", cacheManager = "cacheManager1Hour")
     public String getLongRunningTaskResult(String user) {
         try {
-            RestTemplate restTemplate = new RestTemplate();
-            return restTemplate.getForEntity("http://localhost:13085/user", String.class).getBody();
+            return this.userRestTemplate.getForEntity("http://localhost:13085/user", String.class).getBody();
         } catch (Exception e) {
             log.error("{}", e);
             return null;
